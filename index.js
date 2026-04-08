@@ -2,7 +2,7 @@
 // Required modules
 // -------------------------
 const { Client, GatewayIntentBits } = require('discord.js');
-const { Player } = require('discord-player');
+const { Player, QueryType } = require('discord-player');
 const extractor = require('@discord-player/extractor');
 const { exec } = require('child_process');
 
@@ -104,6 +104,18 @@ player.events.on('emptyQueue', (queue) => {
 });
 
 // -------------------------
+// Helper: detect if query is a URL
+// -------------------------
+function isURL(str) {
+    try {
+        new URL(str);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+// -------------------------
 // Message handler
 // -------------------------
 client.on('messageCreate', async (message) => {
@@ -146,12 +158,14 @@ client.on('messageCreate', async (message) => {
                 await queue.connect(voiceChannel);
             }
 
+            // URLs are auto-detected, search terms use SoundCloud (YouTube blocks bots)
             const searchResult = await player.search(query, {
-                requestedBy: message.author
+                requestedBy: message.author,
+                searchEngine: isURL(query) ? QueryType.AUTO : QueryType.SOUNDCLOUD_SEARCH
             });
 
             if (!searchResult?.tracks?.length) {
-                return message.reply('❌ No results found! Try a different search term or URL.');
+                return message.reply('❌ No results found! Try a different search term or a direct URL.');
             }
 
             if (searchResult.playlist) {
@@ -262,7 +276,7 @@ client.on('messageCreate', async (message) => {
         message.reply(`
 🎵 **Music Bot Commands** 🎵
 
-\`${PREFIX}play <song name or URL>\` - Play a song or add it to queue
+\`${PREFIX}play <song name or URL>\` - Play a song or add it to queue, Please use soundcloud urls or search terms (YouTube blocks bots)
 \`${PREFIX}skip\` - Skip the current song
 \`${PREFIX}stop\` - Stop playing and clear the queue
 \`${PREFIX}queue\` - Show the current queue
@@ -283,7 +297,7 @@ client.on('messageCreate', async (message) => {
 });
 
 // -------------------------
-// Crash guard - keeps bot alive if something unexpected throws
+// Crash guard
 // -------------------------
 process.on('unhandledRejection', (error) => {
     console.error('Unhandled promise rejection:', error);
