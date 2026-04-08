@@ -275,7 +275,7 @@ client.on('messageCreate', async (message) => {
     if (command === 'help' || command === 'cmd' || command === 'commands') {
         message.reply(`
 🎵 **Music Bot Commands** 🎵
-
+Heya ${message.author}, here are the commands you can use: Do note this bot may give remixes of songs if the original is blocked,in that try using soundcloud urls or search terms instead of youtube links.
 \`${PREFIX}play <song name or URL>\` - Play a song or add it to queue, Please use soundcloud urls or search terms (YouTube blocks bots)
 \`${PREFIX}skip\` - Skip the current song
 \`${PREFIX}stop\` - Stop playing and clear the queue
