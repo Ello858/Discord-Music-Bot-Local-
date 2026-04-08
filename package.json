@@ -1,0 +1,23 @@
+{
+  "name": "discord-music-bot",
+  "version": "1.0.0",
+  "description": "A locally hosted Discord music bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discord-player/extractor": "^7.1.0",
+    "@discordjs/opus": "^0.10.0",
+    "@discordjs/rest": "^2.6.0",
+    "@discordjs/voice": "^0.19.0",
+    "discord-player": "^7.1.0",
+    "discord.js": "^14.25.1",
+    "ffmpeg-static": "^5.3.0",
+    "play-dl": "^1.9.7"
+  }
+}
